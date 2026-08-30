@@ -195,6 +195,10 @@ Compress All Images
 <button id="downloadAll" onclick="downloadAll()" style="display:none;">
     Download All Images
 </button>
+
+<button id="clearAll" onclick="clearAll()" style="display:none;">
+    Clear All Images
+</button>
 <div id="images"></div>
 
 </div>
@@ -310,6 +314,14 @@ function downloadAll() {
 
     });
 
+    }
+    function clearAll() {
+    selectedFiles = [];
+    document.getElementById("imageInput").value = "";
+    document.getElementById("images").innerHTML = "";
+    compressedImages = [];
+    document.getElementById("downloadAll").style.display = "none";
+    document.getElementById("clearAll").style.display = "none";
     }
 function compressOne(file, index) {
 
@@ -429,6 +441,7 @@ if (blob.size < file.size) {
 
                 link.style.display =
                 "block";
+                document.getElementById("clearAll").style.display = "block";
 compressedImages.push({
     url: link.href,
     name: link.download
