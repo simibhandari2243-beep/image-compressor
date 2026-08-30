@@ -338,6 +338,15 @@ function compressOne(file, index) {
 
                     return;
                 }
+                var compressedKB =
+    blob.size / 1024;
+
+document.getElementById(
+    "compressed-" + index
+).innerText =
+    "Compressed size: " +
+    compressedKB.toFixed(1) +
+    " KB";
 var savingElement =
     document.getElementById("saving-" + index);
 
