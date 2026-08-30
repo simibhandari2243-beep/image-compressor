@@ -19,8 +19,8 @@ body {
 }
 
 .container {
-    max-width: 500px;
-    margin: 40px auto;
+    max-width: 520px;
+    margin: 30px auto;
     padding: 25px;
     background: white;
     border-radius: 18px;
@@ -57,6 +57,25 @@ input[type="file"] {
     margin-top: 15px;
     border-radius: 10px;
     display: none;
+}
+
+.option-box {
+    margin: 20px 0;
+}
+
+.option-box label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 16px;
+    background: white;
 }
 
 .quality-box {
@@ -101,7 +120,7 @@ button {
     padding: 15px;
     background: #f1f3f5;
     border-radius: 10px;
-    line-height: 1.7;
+    line-height: 1.8;
 }
 
 #result {
@@ -127,6 +146,30 @@ Compress your image quickly and easily
 <input type="file" id="imageInput" accept="image/*">
 
 <img id="preview" class="preview">
+
+</div>
+
+<div class="option-box">
+
+<label for="format">
+Output Format
+</label>
+
+<select id="format">
+
+<option value="image/jpeg">
+JPG
+</option>
+
+<option value="image/png">
+PNG
+</option>
+
+<option value="image/webp">
+WebP
+</option>
+
+</select>
 
 </div>
 
@@ -213,6 +256,8 @@ document.getElementById("imageInput").onchange = function() {
     document.getElementById("saving").innerText =
     "Size reduction: —";
 
+    document.getElementById("result").innerText = "";
+
     document.getElementById("download").style.display =
     "none";
 };
@@ -228,6 +273,9 @@ function compressImage() {
 
     var quality =
     document.getElementById("quality").value / 100;
+
+    var format =
+    document.getElementById("format").value;
 
     var reader =
     new FileReader();
@@ -257,6 +305,13 @@ function compressImage() {
 
             canvas.toBlob(function(blob) {
 
+                if (!blob) {
+
+                    alert("This format is not supported by your browser.");
+
+                    return;
+                }
+
                 var originalKB =
                 selectedFile.size / 1024;
 
@@ -276,6 +331,16 @@ function compressImage() {
                 reduction.toFixed(1) +
                 "%";
 
+                var extension = "jpg";
+
+                if (format === "image/png") {
+                    extension = "png";
+                }
+
+                if (format === "image/webp") {
+                    extension = "webp";
+                }
+
                 var link =
                 document.getElementById("download");
 
@@ -283,7 +348,7 @@ function compressImage() {
                 URL.createObjectURL(blob);
 
                 link.download =
-                "compressed-image.jpg";
+                "compressed-image." + extension;
 
                 link.style.display =
                 "block";
@@ -291,7 +356,7 @@ function compressImage() {
                 document.getElementById("result").innerText =
                 "Compression complete!";
 
-            }, "image/jpeg", quality);
+            }, format, quality);
 
         };
 
@@ -300,7 +365,6 @@ function compressImage() {
     };
 
     reader.readAsDataURL(selectedFile);
-
 }
 
 </script>
