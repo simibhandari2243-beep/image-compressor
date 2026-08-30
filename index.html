@@ -342,8 +342,7 @@ function compressOne(file, index) {
                 var compressedKB =
                 blob.size / 1024;
 
-                var reduction =
-                ((1 - blob.size / file.size) * 100);
+                
 
                 document.getElementById(
                     "compressed-" + index
@@ -353,14 +352,26 @@ function compressOne(file, index) {
                 compressedKB.toFixed(1) +
                 " KB";
 
-                document.getElementById(
-                    "saving-" + index
-                ).innerText =
+                
+var savingElement =
+    document.getElementById("saving-" + index);
 
-                "Size reduction: " +
-                reduction.toFixed(1) +
-                "%";
+if (blob.size < file.size) {
 
+    var reduction =
+        ((1 - blob.size / file.size) * 100);
+
+    savingElement.innerText =
+        "Size reduction: " +
+        reduction.toFixed(1) +
+        "%";
+
+} else {
+
+    savingElement.innerText =
+        "File size increased after compression";
+
+    }
                 document.getElementById(
                     "status-" + index
                 ).innerText =
