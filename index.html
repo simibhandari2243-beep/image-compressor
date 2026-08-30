@@ -192,7 +192,9 @@ value="70"
 <button onclick="compressAll()">
 Compress All Images
 </button>
-
+<button id="downloadAll" onclick="downloadAll()" style="display:none;">
+    Download All Images
+</button>
 <div id="images"></div>
 
 </div>
@@ -271,7 +273,7 @@ document.getElementById("imageInput").onchange = function() {
 };
 
 function compressAll() {
-
+compressedImages = [];
     if (selectedFiles.length === 0) {
 
         alert("Please select at least one image.");
@@ -286,7 +288,29 @@ function compressAll() {
     });
 
 }
+var compressedImages = [];
 
+function downloadAll() {
+
+    if (compressedImages.length === 0) {
+        alert("Please compress images first.");
+        return;
+    }
+
+    compressedImages.forEach(function(item) {
+
+        var link = document.createElement("a");
+
+        link.href = item.url;
+        link.download = item.name;
+
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+    });
+
+    }
 function compressOne(file, index) {
 
     var quality =
@@ -405,7 +429,12 @@ if (blob.size < file.size) {
 
                 link.style.display =
                 "block";
+compressedImages.push({
+    url: link.href,
+    name: link.download
+});
 
+document.getElementById("downloadAll").style.display = "block";
             }, format, quality);
 
         };
